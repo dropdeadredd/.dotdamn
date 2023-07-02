@@ -1,0 +1,7 @@
+#!/usr/bin/env bash  
+      
+echo "$(<$HOME/.config/bspwm/data/current_news.txt)"
+
+
+
+

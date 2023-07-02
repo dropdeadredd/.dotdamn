@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+zscroll -l 40 \
+        --delay 0.1 \
+        --match-command "$HOME/.config/bspwm/scripts/get_news_status" \
+        --update-check true "$HOME/.config/bspwm/scripts/get_news_status" &
+wait
+
