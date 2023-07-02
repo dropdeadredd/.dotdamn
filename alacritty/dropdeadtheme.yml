@@ -1,0 +1,77 @@
+# Themer My Color Set
+
+schemes:
+  drop-dead-color-set-dark: &dark
+    primary:
+      background: "#010006"
+      foreground: "#DBDBDB"
+    cursor:
+      text: "#010006"
+      cursor: "#FFCF86"
+    selection:
+      text: "#010006"
+      background: "#3DB1A3"
+    normal:
+      black: "#4A494D"
+      red: "#EEA000"
+      green: "#90BE6D"
+      yellow: "#FEB952"
+      blue: "#3DB1A3"
+      magenta: "#FD686C"
+      cyan: "#E9D8A6"
+      white: "#DBDBDB"
+    bright:
+      black: "#6E6D71"
+      red: "#F1B333"
+      green: "#A6CB8A"
+      yellow: "#FEC775"
+      blue: "#64C1B5"
+      magenta: "#FD8689"
+      cyan: "#EDE0B8"
+      white: "#FFFFFF"
+    dim:
+      black: "#25242A"
+      red: "#BF8001"
+      green: "#739858"
+      yellow: "#CB9443"
+      blue: "#318E84"
+      magenta: "#CB5358"
+      cyan: "#BBAD86"
+      white: "#B6B6B8"
+  drop-dead-color-set-light: &light
+    primary:
+      background: "#FFFFFF"
+      foreground: "#464646"
+    cursor:
+      text: "#FFFFFF"
+      cursor: "#953D96"
+    selection:
+      text: "#FFFFFF"
+      background: "#007AFF"
+    normal:
+      black: "#464646"
+      red: "#E0383E"
+      green: "#62BA46"
+      yellow: "#FBB927"
+      blue: "#007AFF"
+      magenta: "#F74F9E"
+      cyan: "#10B9A6"
+      white: "#C1C1C1"
+    bright:
+      black: "#656565"
+      red: "#E66065"
+      green: "#81C86B"
+      yellow: "#FCC752"
+      blue: "#3395FF"
+      magenta: "#F972B1"
+      cyan: "#40C7B8"
+      white: "#E0E0E0"
+    dim:
+      black: "#272727"
+      red: "#BB3539"
+      green: "#569D40"
+      yellow: "#D19C27"
+      blue: "#0869D4"
+      magenta: "#CD4786"
+      cyan: "#159C8D"
+      white: "#A2A2A2"

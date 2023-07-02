@@ -1,0 +1,9 @@
+[NotebookList]
+Default=
+1=~/.zim/drpdeadwiki
+
+[Notebook 1]
+uri=~/.zim/drpdeadwiki
+name=drpdeadwiki
+interwiki=None
+icon=None

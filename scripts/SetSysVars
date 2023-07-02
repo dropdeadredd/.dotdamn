@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+SFILE="$HOME/.config/bspwm/scripts/.sys"
+# shellcheck disable=SC2034
+function set_network() {
+    local SYSFILE="$HOME/.config/bspwm/polybar/system.ini"
+
+    # Check if variables are already populated in the system.ini file for polybar
+    if testWifiVar=$(awk -F'"' '/sys_wifi_interface/ {print $2}' "$SYSFILE") || testEthVar=$(awk -F'"' '/sys_eth_interface/ {print $2}' "$SYSFILE"); then
+        DEFNETWORK=$(ip route | grep '^default' | awk '{print $5}')
+        if [[ "$DEFNETWORK" ]]; then
+            # Check the number of lines in DEFNETWORK variable
+            num_lines=$(echo "$DEFNETWORK" | wc -l)
+
+            # Check if both Wi-Fi and Ethernet interfaces are present
+            if [[ "$num_lines" -eq 2 ]]; then
+                eth_interface=$(echo "$DEFNETWORK" | awk 'NR==1')
+                wifi_interface=$(echo "$DEFNETWORK" | awk 'NR==2')
+
+                # Update system.ini with the corresponding Wi-Fi and Ethernet interfaces
+                sed -i -e 's/sys_wifi_interface = .*/sys_wifi_interface = '"$wifi_interface"'/g' "$SYSFILE"
+                sed -i -e 's/sys_eth_interface = .*/sys_eth_interface = '"$eth_interface"'/g' "$SYSFILE"
+
+                # Add active interface to the script
+                active_interface=$(ip route get 1 | awk '{print $5}')
+                sed -i -e 's/sys_active_interface = .*/sys_active_interface = '"$active_interface"'/g' "$SYSFILE"
+
+                # Set the icon based on the active interface
+                if [[ $active_interface == "eth"* ]]; then
+                    icon="󱐥"  # Ethernet icon
+                else
+                    icon="󱝉"  # Wifi icon
+                
+                sed -i -e 's/sys_network_icon = .*/sys_network_icon = '"$icon"'/g' "$SYSFILE"
+                    
+                # Only one interface is present, check if it's Wi-Fi or Ethernet
+                if [[ "$(cat /sys/class/net/$DEFNETWORK/type)" -eq 1 ]]; then
+                    # Update system.ini with the Wi-Fi interface
+                    sed -i -e 's/sys_wifi_interface = .*/sys_wifi_interface = '"$DEFNETWORK"'/g' "$SYSFILE"
+
+                    # Set active interface as the Wi-Fi interface
+                    active_interface="$DEFNETWORK"
+
+                    # Set the WiFi icon
+                    icon="󱝉"  # Wifi icon
+                else
+                    # Update system.ini with the Ethernet interface
+                    sed -i -e 's/sys_eth_interface = .*/sys_eth_interface = '"$DEFNETWORK"'/g' "$SYSFILE"
+
+                    # Set active interface as the Ethernet interface
+                    active_interface="$DEFNETWORK"
+
+                    # Set the Ethernet icon
+                    icon="󱐥"  # Ethernet icon
+                fi
+                
+                # Add active interface and icon to the script
+                sed -i -e 's/sys_active_interface = .*/sys_active_interface = '"$active_interface"'/g' "$SYSFILE"
+                sed -i -e 's/sys_network_icon = .*/sys_network_icon = '"$icon"'/g' "$SYSFILE"
+            fi
+        fi
+    fi
+}
+
+function set_icon() {
+
+# Get the name of the active network interface
+active_interface=$(ip route get 8.8.8.8 | grep -Po '(?<=dev\s)\w+' | head -1)
+
+# Check if the active interface is ethernet or wifi and set the corresponding icon
+if [[ $active_interface == "eth"* ]]; then
+    icon=""  # Ethernet icon
+else
+    icon=""  # Wifi icon
+fi
+
+# Output the icon for polybar
+echo "$icon"
+
+}
+function get_values() {
+	CARD=$(ls -1 /sys/class/backlight/)
+	power_supply_files=$(ls /sys/class/power_supply/)
+
+	for file in $power_supply_files
+	do
+		if [ -e "/sys/class/power_supply/$file/capacity" ]; then
+			battery_file=$file
+    	fi
+
+    	if [ -e "/sys/class/power_supply/$file/online" ]; then
+       		adapter_file=$file
+    	fi
+	done
+
+	BATTERY="$battery_file"
+	ADAPTER="$adapter_file"
+}
+
+function set_values() {
+	if  [[  "$ADAPTER"  ]] ;  then 
+		sed -i -e  " s/sys_adapter = .*/sys_adapter =  $ADAPTER /g "  $HOME /.config/bspwm/scripts/system.ini 
+	fi 
+	if  [[  "$BATTERY"  ]] ;  then 
+		sed -i -e  " s/sys_battery = .*/sys_battery =  $BATTERY /g "  $HOME /.config/bspwm/scripts/system.ini 
+	fi 
+	if  [[  "$CARD"  ]] ;  then 
+		sed -i -e  " s/sys_graphics_card = .*/sys_graphics_card =  $CARD /g "  $HOME /.config/bspwm/scripts/system.ini 
+	fi 
+}
+
+if [[ ! -f "$SFILE" ]]; then
+	get_values
+	set_values
+	touch "$SFILE"
+fi
+
+set_network

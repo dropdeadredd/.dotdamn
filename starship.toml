@@ -1,0 +1,96 @@
+# start color palette
+# #E9D8A6 
+# #FFCF86
+# #EEA000  
+# #EE9B00 
+# #90BE6D 
+# #94D2BD 
+# #005F73 
+# #FD686C
+# #AE2012 
+# #010006
+# #AAAAAA 
+# #B6B6B8 
+# #C9C9C9 
+# #DBDBDB 
+# #E9E9E9
+# #FFFFFF 
+# end color palette
+format = """
+[░▒▓](#FD686C )\
+[ 󰖌|󰚌 ](bg:#FD686C  fg:#010006)\
+[](bg:#005F73 fg:#FD686C)\
+$directory\
+[](fg:#005F73 bg:#90BE6D)\
+$memory_usage\
+[](fg:#90BE6D bg:#94D2BD)\
+$git_branch\
+$git_status\
+$python\
+[](fg:#94D2BD bg:#EEA000 )\
+$time\
+[ ](fg:#EEA000 )\
+\n$character"""
+
+add_newline = false
+
+[line_break]
+disabled = true
+
+[directory]
+style = "fg:#010006 bg:#005F73"
+format = "[ $path ]($style)"
+truncation_length = 5
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Pictures" = "󰊠 "
+"Lab" = " "
+"Music" = " "
+".config" = " "
+
+[git_branch]
+symbol = ""
+style = "bg:#292929"
+format = '[[ $symbol $branch ](fg:#010006 bg:#94D2BD)]($style)'
+
+[git_status]
+style = "bg:#292929"
+format = '[[($all_status$ahead_behind )](fg:#010006 bg:#94D2BD)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#292929"
+format = '[[ $symbol ($version) ](fg:#010006 bg:#94D2BD)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#292929"
+[php]
+symbol = ""
+style = "bg:#292929"
+format = '[[ $symbol ($version) ](fg:#010006 bg:#94D2BD)]($style)'
+
+[python]
+symbol = ""
+style = "bg:#292929"
+format = '[[ $symbol ($virtualenv) ](fg:#010006 bg:#94D2BD)]($style)'
+
+[memory_usage]
+symbol = "󰘚"
+threshold = -1
+style = "bg:#90BE6D"
+format = '[[ $symbol ($ram_pct |  $swap_pct) ](fg:#010006 bg:#90BE6D)]($style)'
+disabled = false
+
+[time]
+disabled = false
+time_format = "%a %I:%M%p" # Hour:Minute Format
+style = "bg:#EEA000"
+format = '[[  $time ](fg:#010006  bg:#EEA000)]($style)'
+
+[character]
+success_symbol = '[ 󰇁](#FDFDFD)'
+error_symbol = '[ e󰇁](#BD3B3B)'
+#style = "#FDFDFD"
+

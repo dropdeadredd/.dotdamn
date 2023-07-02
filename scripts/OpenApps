@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+#  ╔═════════════╗ drop 󰚌 Redd's ═════════ *
+#  ║   ▄█████▄   ║ ╔╦═╗╔═╗╔╦╗╔╦═╗╔═╗╔╦╗╔╗╔ ║   ╔═╗╔═╗╔═╗╔═╗  ╦  ╔═╗╦ ╦╔╗╔╔═╗╦ ╦╔═╗╦═╗
+#  ║  ▄███████▄  ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║   ╠═╣╠═╝╠═╝╚═╗  ║  ╠═╣║ ║║║║║  ╠═╣║╣ ╠╦╝
+#  ║  ██  █  ██  ║  ║ ║║ ║ ║  ║ ║╠═╣║║║║║║ ║   ╩ ╩╩  ╩  ╚═╝  ╩═╝╩ ╩╚═╝╝╚╝╚═╝╩ ╩╚═╝╩╚═
+#  ║   ███████   ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║   ════════════════════════════════ config
+#  ║    █ █ █    ║ ═╩═╝╚═╝ ╩ ═╩═╝╩ ╩╩ ╩╝╚╝ ║
+#  ╚═════════════╝ ══════════════ DOTFILES *
+#	Modified by dropdeadredd https://github.com/dropdeadredd
+# From here you can control your favorite applications for all themes.                                          
+#                                          
+
+
+
+
+case "$1" in
+  --menu)
+    rofi -modi drun -show drun -theme ~/.config/bspwm/rofi/launcher.rasi -line-padding 4 \
+          -columns 2 -padding 50 -hide-scrollbar -terminal alacritty \
+          -show-icons -drun-icon-theme "Papirus-Dark" -font "JetBrainsMono Nerd Font 10";;
+
+  --window)
+    rofi -modi drun -show window -line-padding 4 \
+        -columns 2 -padding 50 -hide-scrollbar -terminal xfce4-terminal \
+        -show-icons -drun-icon-theme "Papirus-Dark" -font "JetBrainsMono Nerd Font 10";;
+  
+  --floating)
+    alacritty --class FloaTerm,Alacritty \
+					-o window.dimensions.lines=22 \
+					window.dimensions.columns=90;;
+
+  --update)
+    alacritty --hold --class FloaTerm,Alacritty \
+					-o window.dimensions.lines=22 \
+					   window.dimensions.columns=90 \
+					-e Updates --update-system;;
+
+  --checkupdates)
+	  alacritty --hold --class Updating,Alacritty \
+					-o window.dimensions.lines=22 \
+					   window.dimensions.columns=47 \
+					-e Updates --print-updates;;
+
+  --ranger)
+    alacritty --class FloaTerm,Alacritty \
+					-o window.dimensions.lines=14 \
+					   window.dimensions.columns=90 \
+					-e ranger;;
+
+  --fetch)
+    alacritty --hold --class FloaTerm,Alacritty \
+					-o window.dimensions.lines=26 \
+					   window.dimensions.columns=40 \
+					-e ~/.local/bin/sysfetch;;
+          
+  --hide)
+    ./HideBar --hide;;
+
+  --unhide)
+    ./HideBar --unhide;;
+
+  --keybinds)
+    sxhkd -c $HOME/.config/bspwm/sxhkdrc &;;
+
+  --quake)
+    tdrop -a -w 50% -h 70% -x 50% -y 29% tilix -p Quake;;
+
+  --scratch)
+    tdrop -a -w 70% -h 35% -y 0 -x 15%  --class scratch alacritty --class=scratch;;
+
+  --terminal)
+    alacritty;;
+
+  --filemanager)
+	  thunar;;
+
+  --browser)
+    floorp;;
+
+  --editor)
+	  kate;;
+
+  --draw)
+    krita;;
+
+  --code)
+	  code;;
+
+  --network)
+	  nm-applet;;
+  
+  --phone)
+    scrcpy;;
+
+  --soundcontrol)
+    pavucontrol;;
+
+  *)
+    echo "Invalid Option. ";;
+esac

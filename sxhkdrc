@@ -1,0 +1,176 @@
+#
+#  ╔═════════════╗ drop 󰚌 Redd's ═════════ *
+#  ║   ▄█████▄   ║ ╔╦═╗╔═╗╔╦╗╔╦═╗╔═╗╔╦╗╔╗╔ ║    ╔═╗═╗ ╦╦ ╦╦╔═╔╦╗╦═╗╔═╗  
+#  ║  ▄███████▄  ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║    ╚═╗╔╩╦╝╠═╣╠╩╗ ║║╠╦╝║   
+#  ║  ██  █  ██  ║  ║ ║║ ║ ║  ║ ║╠═╣║║║║║║ ║    ╚═╝╩ ╚═╩ ╩╩ ╩═╩╝╩╚═╚═╝   
+#  ║   ███████   ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║    ═══════════════ config
+#  ║    █ █ █    ║ ═╩═╝╚═╝ ╩ ═╩═╝╩ ╩╩ ╩╝╚╝ ║
+#  ╚═════════════╝ ══════════════ DOTFILES *
+#  https://github.com/dropdeadredd/.dotdamn  
+# 
+  
+#
+# Apps & Quake (Alacritty,Tilix)
+#
+
+# Open App Menu (rofi)
+super + {d,n,c,w,s,e,b,comma,@space}
+	OpenApps {--menu,--filemanager,--code,--window,--phone,--editor,--browser,--draw,--floating}
+
+# Scratchpad (Alacritty Scratchpad,Tilix Quake)
+super + {_,shift + }Return
+	OpenApps {--scratch,--quake}
+
+#
+# Help & Screenshot
+#
+
+# Show keybindings help
+super + F1
+	KeybindingsHelp
+
+# screenshot
+Print
+	scrot "$(xdg-user-dir PICTURES)/screenshot-$(date +%F_%T).png"
+
+super + Print
+  $HOME/.config/bspwm/scripts/screensh0t
+  
+#
+# Close, Quit, Kill, Reload, Reboot, Shutown
+#
+
+# Reload & Quit BSPWM
+super + {_,shift + }r
+	bspc {wm -r,quit}
+
+# close and kill
+super + {_,shift + }q
+	bspc node -{c,k}
+
+# Show Powermenu (rofi)
+super + XF86AudioMute
+	 $HOME/.config/bspwm/scripts/powermenu
+
+# Reload SXHKD
+super + alt + r
+	pkill -9 -x sxhkd && sxhkd -c $HOME/.config/bspwm/sxhkdrc &
+
+#
+# BSPWN hotkeys
+#
+
+# rotate desktop
+super + ctrl + alt + {h,l}
+	bspc node @/ --rotate {90,-90}
+
+# Circulate the leaves of the tree
+super + {_,shift + }a
+	bspc node @/ --circulate {backward,forward}
+
+# Make split ratios equal
+super + shift + e
+	bspc node @/ --equalize
+
+# Make split ratios balanced
+super + alt + b
+	bspc node @/ --balance
+
+# alternate between the tiled and monocle layout
+super + m
+	bspc desktop -l next
+
+# swap the current node and the biggest node
+super + grave
+	bspc node -s biggest
+
+# set the window state
+super + {t,g,f,x}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+super + ctrl + {m,x,s,p,i}
+	bspc node -g {marked,locked,sticky,private,hidden}
+
+# Focused desktop window gaps scroll
+super + button{4,5}
+	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 5 ))
+
+# Global window gaps scroll
+super + alt + button{4,5}
+	bspc config window_gap $(( $(bspc config window_gap) {-,+} 5 ))
+
+# focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+super + {_,shift + }p
+	bspc node -f @{parent,brother}
+super + {_,shift + }v
+	bspc node -f @{first,second}
+
+# focus the next desktop,node in the current monitor,desktop
+super + {_,shift +}Tab
+	bspc {desktop,node} -f next.local
+
+# focus the previous desktop,node in the current monitor,desktop
+super + alt + {_,shift + }Tab
+	bspc {desktop,node} -f previous.local
+
+# focus the last desktop,node 
+super + {_,shift +}period
+	bspc {desktop,node} -f last 
+# focus the older or newer node in the focus history
+super + {o,y}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#
+# preselect
+#
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+super + alt + shift + c
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + c
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# expand, contract a window by moving one of its side inward/outward
+super + {_, shift + }bracket{left,right}
+	bspc node -z {right -10 0,right 10 0,left -10 0, left 10 0}
+
+# expand, contract a window by moving one of its side upward/downward
+super + alt + {_,shift + }bracket{left,right}
+	bspc node -z {top 0 -10,top 0 10,bottom 0 -10,bottom 0 10,}
+
+# move a floating window
+alt + {h,j,k,l}
+	bspc node -v {-10 0,0 10,0 -10,10 0}
+
+# Music Control
+XF86Audio{Next,Prev,Play,Stop}
+	MediaControl {--next,--previous,--toggle,--stop}
+
+# Change transparency on focused window
+ctrl + alt {XF86AudioLowerVolume,XF86AudioRaiseVolume,t}
+	{picom-trans -c -o +3, picom-trans -c -o -1, picom-trans -c -d}

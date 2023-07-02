@@ -1,0 +1,19 @@
+#  Font configuration
+font:
+  normal:
+    family: sfmono Nerd Font mono
+    #style: Regular
+
+  bold:
+    family: sfmono Nerd Font mono
+    #style: Bold
+  
+  italic:
+    family: sfmono Nerd Font mono
+    #style: Italic
+
+  bold_italic:
+    family: sfmono Nerd Font mono
+    #style: Bold Italic
+
+  size: 10

@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+#  ╔═════════════╗ drop 󰚌 Redd's ═════════ *
+#  ║   ▄█████▄   ║ ╔╦═╗╔═╗╔╦╗╔╦═╗╔═╗╔╦╗╔╗╔ ║    ╦ ╦╦╔╦╗╔═╗  ╔╗ ╔═╗╦═╗
+#  ║  ▄███████▄  ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║    ╠═╣║ ║║║╣   ╠╩╗╠═╣╠╦╝
+#  ║  ██  █  ██  ║  ║ ║║ ║ ║  ║ ║╠═╣║║║║║║ ║    ╩ ╩╩═╩╝╚═╝  ╚═╝╩ ╩╩╚═
+#  ║   ███████   ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║    ═══════════════ config
+#  ║    █ █ █    ║ ═╩═╝╚═╝ ╩ ═╩═╝╩ ╩╩ ╩╝╚╝ ║
+#  ╚═════════════╝ ══════════════ DOTFILES *
+#  https://github.com/dropdeadredd/.dotdamn  
+#  
+# 
+# 
+#	Simple script to hide/show polybar
+#   Author: dropdeadredd
+
+function hide() {
+	
+case "${CTHEME}" in
+    main)
+        polybar-msg cmd hide | bspc config top_padding 2
+        ;;
+	ayetheme)
+		polybar-msg cmd hide | bspc config bottom_padding 3
+		;;
+	beetheme)
+		polybar-msg cmd hide | bspc config bottom_padding 3
+		;;
+	seetheme)
+		polybar-msg cmd hide | bspc config bottom_padding 3
+		;;
+    *)
+        echo "Error: Something went wrong...probably in the code somewhere. Glad to help."
+        ;;
+esac
+	
+}
+
+function unhide() {
+	
+case "${CTHEME}" in
+	main)
+		polybar-msg cmd show | bspc config bottom_padding 2
+		;;
+	ayetheme)
+		polybar-msg cmd hide | bspc config bottom_padding 3
+		;;
+	beetheme)
+		polybar-msg cmd hide | bspc config bottom_padding 3
+		;;
+	seetheme)
+		polybar-msg cmd hide | bspc config bottom_padding 3
+		;;
+	*)
+		echo "Error: Something failed...probably should check that out."
+		;;
+esac
+
+}
+
+case $1 in
+	-h | --hide | hide)
+		hide
+		exit;;
+	-u | --unhide | unhide)
+		unhide
+		exit;;
+	*) # Invalid option
+		echo "Error: Invalid option"
+		exit;;
+esac
+

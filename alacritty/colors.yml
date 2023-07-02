@@ -1,0 +1,38 @@
+# Colors (vintage-dropdead) dropdead
+colors:
+   	primary:
+      					background: "#0C0C0C"
+      					foreground: "#C9C9C9"
+    				cursor:
+      					text: "#0C0C0C"
+      					cursor: "#EE9B00"
+    				selection:
+      					text: "#0C0C0C"
+      					background: "#94D2BD"
+    				normal:
+      					black: "#4B4B4B"
+      					red: "#EE9B00"
+      					green: "#90BE6D"
+     					yellow: "#AE2012"
+     					blue: "#94D2BD"
+    					magenta: "#005F73"
+      					cyan: "#E9D8A6"
+      					white: "#C9C9C9"
+    				bright:
+      					black: "#6B6B6B"
+    					red: "#EDAB2F"
+      					green: "#A2C786"
+      					yellow: "#BA483D"
+      					blue: "#A5D7C6"
+      					magenta: "#2F7B8B"
+      					cyan: "#E9DBB3"
+      					white: "#E9E9E9"
+    				dim:
+      					black: "#2C2C2C"
+      					red: "#C17E02"
+    					green: "#769A5A"
+      					yellow: "#8E1C11"
+     					blue: "#79AA9A"
+      					magenta: "#024E5E"
+      					cyan: "#BDAF87"
+      					white: "#AAAAAA"
