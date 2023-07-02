@@ -1,0 +1,189 @@
+#  ╔═════════════╗ drop 󰚌 Redd's ═════════ *
+#  ║   ▄█████▄   ║ ╔╦═╗╔═╗╔╦╗╔╦═╗╔═╗╔╦╗╔╗╔ ║  
+#  ║  ▄███████▄  ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║   
+#  ║  ██  █  ██  ║  ║ ║║ ║ ║  ║ ║╠═╣║║║║║║ ║   
+#  ║   ███████   ║  ║ ║║ ║ ║  ║ ║║ ║║║║║║║ ║   
+#  ║    █ █ █    ║ ═╩═╝╚═╝ ╩ ═╩═╝╩ ╩╩ ╩╝╚╝ ║
+#  ╚═════════════╝ ══════════════ DOTFILES *
+#  https://github.com/dropdeadredd/.dotdamn 
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+
+# >>> Live User Prompt >>>
+_set_liveuser_PS1() {
+    PS1='[\u@\h \W]\$ '
+    if [ "$(whoami)" = "liveuser" ] ; then
+        local iso_version="$(grep ^VERSION= /usr/lib/endeavouros-release 2>/dev/null | cut -d '=' -f 2)"
+        if [ -n "$iso_version" ] ; then
+            local prefix="eos-"
+            local iso_info="$prefix$iso_version"
+            PS1="[\u@$iso_info \W]\$ "
+        fi
+    fi
+}
+_set_liveuser_PS1
+unset -f _set_liveuser_PS1
+# <<< Live User Prompt <<<
+
+
+[[ "$(whoami)" = "root" ]] && return
+# limits recursive functions, see 'man bash'
+[[ -z "$FUNCNEST" ]] && export FUNCNEST=100          
+
+## Use the up and down arrow keys for finding a command in history
+## (you can write some initial letters of the command first).
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
+
+
+# >>> EndeavourOS Functions >>>
+ShowInstallerIsoInfo() {
+    local file=/usr/lib/endeavouros-release
+    if [ -r $file ] ; then
+        cat $file
+    else
+        echo "Sorry, installer ISO info is not available." >&2
+    fi
+}
+
+# [ -f ~/.welcome_screen ]] && . ~/.welcome_screen
+_open_files_for_editing() {
+    #Do not use for executable files!
+
+    if [ -x /usr/bin/exo-open ] ; then
+        echo "exo-open $@" >&2
+        setsid exo-open "$@" >& /dev/null
+        return
+    fi
+    if [ -x /usr/bin/xdg-open ] ; then
+        for file in "$@" ; do
+            echo "xdg-open $file" >&2
+            setsid xdg-open "$file" >& /dev/null
+        done
+        return
+    fi
+
+    echo "$FUNCNAME: package 'xdg-utils' or 'exo' is required." >&2
+}
+
+## Aliases for the functions above.
+alias ef='_open_files_for_editing'     
+# 'ef' opens given file(s) for editing
+alias pacdiff=eos-pacdiff
+# <<< EndeavourOS Functions <<<
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/ddrx/.miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/ddrx/.miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/ddrx/.miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/ddrx/.miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+conda deactivate
+# <<< conda initialize <<<
+
+# >>> Global Aliases <<<
+alias ex='export'
+alias edit='micro'
+alias restart='systemctl reboot'
+alias py='python'
+alias k='kill'
+alias null='/dev/null'
+alias cs='clear;ls'
+alias q='exit'
+alias c='clear'
+alias o='xdg-open'
+alias flash='exec bash'
+alias bashrc='micro ~/.bashrc'
+alias rdfm='rdfm -f ~/.dotdamn link'
+
+# dir
+alias home='cd ~'
+alias root='cd /'
+alias ..='cd ..'
+alias ...='cd ..; cd ..'
+alias ....='cd ..; cd ..; cd ..'
+alias  _='sudo'
+
+# coreutil updates
+alias cp='xcp'
+alias cat='bat'
+alias grep='rg'
+alias ls='exa -axG --icons'
+alias sl=ls
+# git
+alias g='git'
+alias st='git status'
+alias com='git commit -m'
+alias stash='git stash'
+alias gadd='git add -u'
+alias add='git add .'
+alias clone='git clone'
+# <<< Global Aliases <<<
+
+# << functions <<<
+function cd() {
+    builtin cd "$1"
+    ls -xaG --icons
+}
+
+function _rbaux() {
+    # troubleshooting function that restarts auxiliary processes used by bspwm w/o restarting bspwm
+
+    function _runprocs() {
+        local theme_dir="~/.config/bspwm/themes/dropdead"
+
+        picom -b --config "$HOME"/.config/bspwm/picom.conf &
+        dunst -config "$HOME"/.config/bspwm/dunstrc &
+        dex -a -s /etc/xdg/autostart:~/.config/autostart &
+        feh --bg-fill /home/ddrx/Pictures/wallpapers/nokings.png
+        sxhkd -c "$HOME"/.config/bspwm/sxhkdrc &
+        polybar -q dropdead-bar -c ${theme_dir}/config.ini &
+
+        echo "Auxiliary reboot done..."
+    }
+
+    function _killprocs() {
+        local processes=("picom" "polybar" "eww" "sxhkd" "dunst" "dex" "feh" "firewall-applet")
+
+        for process in "${processes[@]}"; do
+        if pidof -q "$process"; then
+            pkill -9 -x "$process" > /dev/null; sleep 0.1
+        fi
+        while pgrep -u $UID -x "$process" >/dev/null; do sleep 1; done
+        done
+        echo "procs killed. Restarting..."
+
+        _runprocs
+    }                                                              
+     _killprocs
+}
+# >>> functions >>>
+
+# >>> Env Variables >>>
+export PATH="/home/ddrx/.local/bin:/home/ddrx/.bin:/home/ddrx/.cargo/bin:$PATH"
+export EDITOR='micro'
+export BROWSER='floorp'
+export TERMINAL='alacritty'
+# <<< Env Variables <<<
+
+# >>> TILIX FIX <<<
+if [[ $TILIX_ID ]] || [[ $VTE_VERSION ]]; then
+	. /etc/profile.d/vte.sh
+fi 
+# <<< TILIX FIX <<<
+
+eval "$(zoxide init bash)"
+eval "$(starship init bash)"
+# <<< app init <<<
