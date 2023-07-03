@@ -1,0 +1,27 @@
+# Add package names available from repositories (not from AUR) one package-name per line.
+# Note: not for offline install.
+flatpak
+alacritty
+polybar
+zoxide
+starship
+exa
+micro
+zim
+tilix
+bat
+bat-extras
+picom
+base-devel
+paru
+rofi
+feh
+code
+ripgrep-all
+procs
+htop
+btop
+git
+dunst
+fzf
+xz
